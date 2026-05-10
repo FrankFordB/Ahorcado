@@ -1,202 +1,82 @@
 # -*- coding: utf-8 -*-
-"""
-
-TP de Ahorcado
-Franco Burgoa
-
-"""
 import random
-import os
-import time
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
-
 templates = Jinja2Templates(directory="templates")
-
-
-@app.get("/", response_class=HTMLResponse)
-def inicio(request: Request):
-    return templates.TemplateResponse(request, "index.html")
-
-################################ FUNCIONES ####################################
-
-def list_to_string(palabra):
-    texto=""
-    for letra in palabra:
-        texto= texto + letra
-    return texto
-
-def list_to_oculta(oculta):
-    texto=""
-    for letra in oculta:
-        texto= texto+" "+ letra
-    return texto
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 listaPalabras = ["python","computadora","teclado","monitor","raton",
                  "programa","variable","funcion","bucle","condicion",
                  "internet","servidor","archivo","carpeta","memoria",
-                 "pantalla","codigo","juego","ahorcado","musica",
-                 "guitarra","piano","bateria","sintesis","cancion",
-                 "ritmo","melodia","escuela","cuaderno","lapiz",
-                 "mochila","profesor","alumno","examen","matematica",
-                 "historia","geografia","biologia","futbol","pelota",
-                 "arquero","cancha","golazo","camiseta","entrenador",
-                 "montana","rio","bosque","desierto","planeta",
-                 "estrella","galaxia","luna","sol","tormenta"]
+                 "pantalla","codigo","juego","ahorcado","musica"]
 
-if __name__ == "__main__":
-    palabra=list(random.choice(listaPalabras))
-    oculta=list("_"*len(palabra))
+# Estado global del juego
+juego = {
+    "palabra": [],
+    "oculta": [],
+    "intentos": 7,
+    "letras_usadas": [],
+    "mensaje": "",
+    "terminado": False
+}
 
-    respuesta=0
-    letra=0
-    contador_medio=7
-    contador_facil=10
-    contador_dificil=3
+def nuevo_juego():
+    palabra = list(random.choice(listaPalabras))
+    juego["palabra"] = palabra
+    juego["oculta"] = ["_"] * len(palabra)
+    juego["intentos"] = 7
+    juego["letras_usadas"] = []
+    juego["mensaje"] = ""
+    juego["terminado"] = False
 
-    print(" _______________________________________________________________________")
-    print("├                                                                      ┤")
-    print("├                    🎮 Bienvenido a EndGames 🎮                      ┤")
-    print("├                     🔎 Juego del Ahorcado 🔎                        ┤")
-    print("├______________________________________________________________________┤")
+def get_contexto(request):
+    return {
+        "oculta": " ".join(juego["oculta"]),
+        "intentos": juego["intentos"],
+        "letras_usadas": juego["letras_usadas"],
+        "mensaje": juego["mensaje"],
+        "terminado": juego["terminado"],
+        "DEBUG": True,
+    }
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    nuevo_juego()
+    return templates.TemplateResponse(request=request, name="index.html", context=get_contexto(request))
 
-    dificultad= int(input("\n"
-    "---------------- Elija la dificultad y presione Enter ------------------\n"
-    "\n1= Facilito 🗿 (10 intentos)"
-    "\n2= Masomeno 🫦 (7 intentos)"
-    "\n3= Dificil  🔥 (3 Intentos)\nIngrese el nivel: "))
+@app.post("/", response_class=HTMLResponse)
+def enviar(request: Request, letra: str = Form(...)):
+    letra = letra.lower()
 
-    print(palabra)
+    if juego["terminado"]:
+        juego["mensaje"] = "El juego terminó. Iniciá una nueva partida."
 
-    # ========================= FACIL =========================
+    elif not letra.isalpha() or len(letra) != 1:
+        juego["mensaje"] = "Ingresá solo una letra válida."
 
-    if dificultad==1:
-        print("")
-        print("Palabra            :", list_to_oculta(oculta),)
-        print(f"\nCantidad de intentos restantes {contador_facil}")
+    elif letra in juego["letras_usadas"]:
+        juego["mensaje"] = f"Ya usaste la letra '{letra}'."
 
-        while (palabra!=oculta) and (contador_facil>=1):
+    elif letra in juego["palabra"]:
+        juego["letras_usadas"].append(letra)
+        for i, l in enumerate(juego["palabra"]):
+            if l == letra:
+                juego["oculta"][i] = letra
+        juego["mensaje"] = f"¡Correcto! '{letra}' está en la palabra."
 
-            letra=input("Ingrese una letra: ")
+        if juego["oculta"] == juego["palabra"]:
+            juego["mensaje"] = "¡GANASTE! 🎉"
+            juego["terminado"] = True
+    else:
+        juego["letras_usadas"].append(letra)
+        juego["intentos"] -= 1
+        juego["mensaje"] = f"'{letra}' no está en la palabra."
 
-            if letra.isalpha() and len(letra)==1 and letra in palabra:
+        if juego["intentos"] == 0:
+            juego["mensaje"] = f"PERDISTE 💀 La palabra era: {''.join(juego['palabra'])}"
+            juego["terminado"] = True
 
-                for i in range(len(palabra)):
-                    if palabra[i]==letra:
-                        oculta[i]=letra
-
-                print("\n========================================")
-                print("Intentos restantes :", contador_facil)
-                print("Letra ingresada    :", letra)
-                print("Estado             : CORRECTO")
-                print("Palabra            :", list_to_oculta(oculta))
-                print("========================================")
-                
-                if palabra==oculta:
-                    print("Ganaste Crack")
-            elif not letra.isalpha() or len(letra) > 1:
-                print("\nIngrese solo una letra válida\n")
-            else:
-
-                contador_facil-=1
-
-                print("\n========================================")
-                print("Intentos restantes :", contador_facil)
-                print("Letra ingresada    :", letra)
-                print("Estado             : INCORRECTO")
-                print("Palabra            :", list_to_oculta(oculta))
-                print("========================================")
-                print("Tu letra no esta.")
-                
-            if contador_facil==0:
-                print("PERDISTE, SOS EL PIOR")
-
-
-    # ========================= MEDIO =========================
-
-    if dificultad==2:
-        print("Palabra            :", list_to_oculta(oculta))
-        print(f"\nCantidad de intentos restantes {contador_medio}")
-
-        while (palabra!=oculta) and (contador_medio>=1):
-
-            letra=input("Ingrese una letra: ")
-
-            if letra.isalpha() and len(letra)==1 and letra in palabra:
-
-                for i in range(len(palabra)):
-                    if palabra[i]==letra:
-                        oculta[i]=letra
-
-                print("\n========================================")
-                print("Intentos restantes :", contador_medio)
-                print("Letra ingresada    :", letra)
-                print("Estado             : CORRECTO")
-                print("Palabra            :", list_to_oculta(oculta))
-                print("========================================")
-
-                if palabra==oculta:
-                    print("Ganaste Crack")
-            elif not letra.isalpha() or len(letra) > 1:
-                print("\nIngrese solo una letra válida\n")
-            else:
-
-                contador_medio-=1
-
-                print("\n========================================")
-                print("Intentos restantes :", contador_medio)
-                print("Letra ingresada    :", letra)
-                print("Estado             : INCORRECTO")
-                print("Palabra            :", list_to_oculta(oculta))
-                print("========================================")
-                print("Tu letra no esta.")
-
-            if contador_medio==0:
-                print("PERDISTE, SOS EL PIOR")
-
-
-    # ========================= DIFICIL =========================
-
-    if dificultad==3:
-        print("Palabra            :", list_to_oculta(oculta))
-        print(f"\nCantidad de intentos restantes {contador_dificil}")
-
-        while (palabra!=oculta) and (contador_dificil>=1):
-
-            letra=input("Ingrese una letra: ")
-
-            if letra.isalpha() and len(letra)==1 and letra in palabra:
-
-                for i in range(len(palabra)):
-                    if palabra[i]==letra:
-                        oculta[i]=letra
-            
-                print("\n========================================")
-                print("Intentos restantes :", contador_dificil)
-                print("Letra ingresada    :", letra)
-                print("Estado             : CORRECTO")
-                print("Palabra            :", list_to_oculta(oculta))
-                print("========================================")
-
-                if palabra==oculta:
-                    print("Ganaste Crack")
-            elif not letra.isalpha() or len(letra) > 1:
-                print("\nIngrese solo una letra válida\n")
-                
-            else:
-
-                contador_dificil-=1
-
-                print("\n========================================")
-                print("Intentos restantes :", contador_dificil)
-                print("Letra ingresada    :", letra)
-                print("Estado             : INCORRECTO")
-                print("Palabra            :", list_to_oculta(oculta))
-                print("========================================")
-                print("Tu letra no esta.")
-
-            if contador_dificil==0:
-                print("PERDISTE, SOS EL PIOR")
+    return templates.TemplateResponse(request=request, name="index.html", context=get_contexto(request))

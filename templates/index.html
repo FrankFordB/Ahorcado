@@ -1,16 +1,125 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Mi app</title>
-</head>
-<body>
-<p>{{ palabraa }} hola</p>
-<p>Intentos restantes: {{ intentos }}</p>
-<form method="post" action="/adivinar">
-    <input name="letra" maxlength="1" />
-    <button type="submit">Enviar</button>
-</form>
-<h1>Hola desde FastAPI + HTML</h1>
 
+<head>
+    <title>Ahorcado</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="body_master">
+        <div class="header">
+            <!-- From Uiverse.io by dexter-st --> 
+<div class="wrapper-grid">
+  <div class="cube">
+    <div class="face face-front">A</div>
+    <div class="face face-back"></div>
+    <div class="face face-right"></div>
+    <div class="face face-left"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+
+  <div class="cube">
+    <div class="face face-front">H</div>
+    <div class="face face-back"></div>
+    <div class="face face-right"></div>
+    <div class="face face-left"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+
+  <div class="cube">
+    <div class="face face-front">O</div>
+    <div class="face face-back"></div>
+    <div class="face face-right"></div>
+    <div class="face face-left"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+
+  <div class="cube">
+    <div class="face face-front">R</div>
+    <div class="face face-back"></div>
+    <div class="face face-right"></div>
+    <div class="face face-left"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+
+  <div class="cube">
+    <div class="face face-front">C</div>
+    <div class="face face-back"></div>
+    <div class="face face-right"></div>
+    <div class="face face-left"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+
+  <div class="cube">
+    <div class="face face-front">A</div>
+    <div class="face face-back"></div>
+    <div class="face face-right"></div>
+    <div class="face face-left"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+
+  <div class="cube">
+    <div class="face face-front">2</div>
+    <div class="face face-back"></div>
+    <div class="face face-right"></div>
+    <div class="face face-left"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+    
+</div>
+
+            <div class="loader"></div>
+        </div>
+        <div class="Cuerpo_juego">
+            <div class="box_palabras">
+                <p>Palabra: <strong>{{ oculta }}</strong></p>
+                <p>Intentos restantes: <strong>{{ intentos }}</strong></p>
+
+                <p>Letras usadas:
+                    {% if letras_usadas %}
+                    {% for l in letras_usadas %}
+                    <strong>{{ l }}</strong>
+                    {% endfor %}
+                    {% else %}
+                    ninguna todavía
+                    {% endif %}
+                </p>
+
+                <p>{{ mensaje }}</p>
+            </div>
+            {% if not terminado %}
+            <form method="post" action="/">
+                <input class="input_style" name="letra" maxlength="1" placeholder="Ingresá una letra" required
+                    autofocus />
+                
+            </form>
+            {% endif %}
+
+            <br>
+            <a class="nueva_partida" href="/"><span>Nueva partida</span></a>
+        </div>
+    </div>
+    {% if DEBUG %}
+    <script>
+        let lastModified = null;
+        setInterval(async () => {
+            const res = await fetch("/static/style.css", { cache: "no-store" });
+            const modified = res.headers.get("last-modified");
+            if (lastModified && modified !== lastModified) {
+                location.reload();
+            }
+            lastModified = modified;
+        }, 1000);
+    </script>
+    {% endif %}
 </body>
+
 </html>
