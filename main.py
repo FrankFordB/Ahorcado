@@ -41,7 +41,7 @@ def get_contexto(request):
         "mensaje": juego["mensaje"],
         "terminado": juego["terminado"],
         "mostrar_modal": "flex" if juego["terminado"] else "none",  # ← nuevo
-        "DEBUG": True,
+        
     }
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
