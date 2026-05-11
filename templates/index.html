@@ -4,163 +4,226 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ahorcado</title>
+    <link rel="stylesheet" href="/static/Sombras.css">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="shortcut icon" href="static\juego.avif" type="image/x-icon" />
 </head>
 
-<body><div class="container">
-  <div id="stars"></div>
-  <div id="stars2"></div>
-  <div id="stars3"></div>
-  <div></div>
-
-    <div class="body_master">
-        <div class="header">
-            <h1 class="hola">
-<div class="wrapper-grid">
-  <div class="cube">
-    <div class="face face-front">A</div>
-    <div class="face face-back"></div>
-    <div class="face face-right"></div>
-    <div class="face face-left"></div>
-    <div class="face face-top"></div>
-    <div class="face face-bottom"></div>
-  </div>
-
-  <div class="cube">
-    <div class="face face-front">H</div>
-    <div class="face face-back"></div>
-    <div class="face face-right"></div>
-    <div class="face face-left"></div>
-    <div class="face face-top"></div>
-    <div class="face face-bottom"></div>
-  </div>
-
-  <div class="cube">
-    <div class="face face-front">O</div>
-    <div class="face face-back"></div>
-    <div class="face face-right"></div>
-    <div class="face face-left"></div>
-    <div class="face face-top"></div>
-    <div class="face face-bottom"></div>
-  </div>
-
-  <div class="cube">
-    <div class="face face-front">R</div>
-    <div class="face face-back"></div>
-    <div class="face face-right"></div>
-    <div class="face face-left"></div>
-    <div class="face face-top"></div>
-    <div class="face face-bottom"></div>
-  </div>
-
-  <div class="cube">
-    <div class="face face-front">C</div>
-    <div class="face face-back"></div>
-    <div class="face face-right"></div>
-    <div class="face face-left"></div>
-    <div class="face face-top"></div>
-    <div class="face face-bottom"></div>
-  </div>
-
-  <div class="cube">
-    <div class="face face-front">A</div>
-    <div class="face face-back"></div>
-    <div class="face face-right"></div>
-    <div class="face face-left"></div>
-    <div class="face face-top"></div>
-    <div class="face face-bottom"></div>
-  </div>
-
-  <div class="cube">
-    <div class="face face-front">2</div>
-    <div class="face face-back"></div>
-    <div class="face face-right"></div>
-    <div class="face face-left"></div>
-    <div class="face face-top"></div>
-    <div class="face face-bottom"></div>
-  </div>
-  
- 
-</div>
-</h1>
-
-<!--MODAL -->
-<div class="modal" style="display: {{ mostrar_modal }}">
-    <div class="modal_contenido">
-        <p>{{ mensaje }}</p>
-        <a href="/">Jugar de nuevo</a>
+<body>
+<label class="ux-vault-toggle">
+  <input type="checkbox" id="switchVolver" class="ux-vault-toggle__input" />
+  <div class="ux-vault-toggle__wrapper">
+    <svg class="ux-vault-toggle__filter" width="0" height="0">
+      <defs>
+        <filter id="ux-metal-noise">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.75"
+            numOctaves="3"
+            result="noise"
+          ></feTurbulence>
+          <feColorMatrix
+            type="matrix"
+            values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.12 0"
+            in="noise"
+            result="coloredNoise"
+          ></feColorMatrix>
+          <feComposite
+            operator="in"
+            in="coloredNoise"
+            in2="SourceGraphic"
+            result="composite"
+          ></feComposite>
+          <feBlend mode="multiply" in="composite" in2="SourceGraphic"></feBlend>
+        </filter>
+      </defs>
+    </svg>
+    <div class="ux-vault-toggle__track">
+      <div class="ux-vault-toggle__texture"></div>
+      <svg class="ux-vault-toggle__circuit" viewBox="0 0 140 60">
+        <path
+          d="M 35 30 L 60 30 L 75 18 L 115 18"
+          class="ux-circuit-path ux-circuit--off"
+        ></path>
+        <path
+          d="M 25 42 L 65 42 L 80 30 L 105 30"
+          class="ux-circuit-path ux-circuit--on"
+        ></path>
+      </svg>
+      <div class="ux-vault-toggle__status ux-vault-toggle__status--off">
+        <span style="--i:1">O</span><span style="--i:2">F</span
+        ><span style="--i:3">F</span>
+      </div>
+      <div class="ux-vault-toggle__status ux-vault-toggle__status--on">
+        <span style="--i:1">O</span><span style="--i:2">N</span>
+      </div>
     </div>
-</div>
-            <div class="loader"></div>
-        </div>
-        <div class="Cuerpo_juego">
-            <div class="box_palabras">
-                
-                <p>Palabra: <strong>{{ oculta }}</strong></p>
-                <p>Intentos restantes: <strong>{{ intentos }}</strong></p>
-                <div style="display: flex; gap: 10px;">
-                
-                <p>Letras usadas: </p> 
-                
-                
-                <p class="error_letra">
-                    {% if letras_usadas  %}
-                    {% for l in letras_usadas %}
-                    <strong>{{ l }}</strong>
-                    {% endfor %}
-                    {% else %}
-                    ninguna todavía
-                    {% endif %}
-                </p>
-               
+    <div class="ux-vault-toggle__thumb">
+      <div class="ux-vault-toggle__thumb-ring"></div>
+      <div class="ux-vault-toggle__thumb-core">
+        <svg
+          class="ux-thumb-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="5"></circle>
+          <path d="M12 2 L12 5 M12 19 L12 22 M2 12 L5 12 M19 12 L22 12"></path>
+        </svg>
+      </div>
+      <div class="ux-vault-toggle__thumb-glare"></div>
+    </div>
+  </div>
+</label>
+
+    <div class="container">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+        <div></div>
+
+        <div class="body_master">
+            <div class="header">
+                <h1 class="hola">
+                    <div class="wrapper-grid">
+                        <div class="cube">
+                            <div class="face face-front">A</div>
+                            <div class="face face-back"></div>
+                            <div class="face face-right"></div>
+                            <div class="face face-left"></div>
+                            <div class="face face-top"></div>
+                            <div class="face face-bottom"></div>
+                        </div>
+
+                        <div class="cube">
+                            <div class="face face-front">H</div>
+                            <div class="face face-back"></div>
+                            <div class="face face-right"></div>
+                            <div class="face face-left"></div>
+                            <div class="face face-top"></div>
+                            <div class="face face-bottom"></div>
+                        </div>
+
+                        <div class="cube">
+                            <div class="face face-front">O</div>
+                            <div class="face face-back"></div>
+                            <div class="face face-right"></div>
+                            <div class="face face-left"></div>
+                            <div class="face face-top"></div>
+                            <div class="face face-bottom"></div>
+                        </div>
+
+                        <div class="cube">
+                            <div class="face face-front">R</div>
+                            <div class="face face-back"></div>
+                            <div class="face face-right"></div>
+                            <div class="face face-left"></div>
+                            <div class="face face-top"></div>
+                            <div class="face face-bottom"></div>
+                        </div>
+
+                        <div class="cube">
+                            <div class="face face-front">C</div>
+                            <div class="face face-back"></div>
+                            <div class="face face-right"></div>
+                            <div class="face face-left"></div>
+                            <div class="face face-top"></div>
+                            <div class="face face-bottom"></div>
+                        </div>
+
+                        <div class="cube">
+                            <div class="face face-front">A</div>
+                            <div class="face face-back"></div>
+                            <div class="face face-right"></div>
+                            <div class="face face-left"></div>
+                            <div class="face face-top"></div>
+                            <div class="face face-bottom"></div>
+                        </div>
+
+                        <div class="cube">
+                            <div class="face face-front">2</div>
+                            <div class="face face-back"></div>
+                            <div class="face face-right"></div>
+                            <div class="face face-left"></div>
+                            <div class="face face-top"></div>
+                            <div class="face face-bottom"></div>
+                        </div>
+
+
+                    </div>
+                </h1>
+
+                <!--MODAL -->
+                <div class="modal" style="display: {{ mostrar_modal }}">
+                    <div class="modal_contenido">
+                        <p>{{ mensaje }}</p>
+                        <a href="/">Jugar de nuevo</a>
+                    </div>
                 </div>
-                <p>{{ mensaje }}</p>
+                <div class="loader"></div>
             </div>
-            {% if not terminado %}
-            <form id="miForm" method="post" action="/">
-                <input id="input_clean" class="input_style" name="letra" maxlength="1" placeholder="Ingresá una letra" required
-                    autofocus />
-                
-            </form>
-            {% endif %}
+            <div class="Cuerpo_juego">
+                <div class="dibujo">
+                    
+                    <canvas id="gameCanvas" width="500" height="400" data-intentos="{{ intentos }}"></canvas>
+                    <p> <strong>{{ oculta }}</strong></p>
+                </div>
 
-            <br>
-            <a class="nueva_partida" href="/"><span>Nueva partida</span></a>
+                <div class="box_palabras" data-intentos="{{ intentos }}">
+
+
+                    <div class="datos_str">
+                        <p>Intentos restantes: <strong>{{ intentos }}</strong></p>
+                        <p>Letras usadas: </p>
+                        <p class="error_letra">
+                            <strong style="color: {{color_letra}}; text-transform: uppercase">{{ letras_usadas }}
+                            </strong>
+                            <strong style="color: {{color_letra_mal}} ; text-transform: uppercase">{{letras_usadas_mal}}
+                            </strong>
+                        </p>
+                        <p> {{ mensaje }}</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="form_nueva">
+                {% if not terminado %}
+                <form id="miForm" method="post" action="/">
+                    <input id="input_clean" class="input_style" name="letra" maxlength="1"
+                        placeholder="Ingresá una letra" required autofocus autocomplete="off" autocorrect="off"
+                        autocapitalize="off" spellcheck="false" />
+
+                </form>
+                {% endif %}
+
+                <br>
+                <a class="nueva_partida" href="/"><span>Nueva partida</span></a>
+            </div>
         </div>
-    </div>
-    {% if DEBUG %}
-    
-    <script>
-        let lastModified = null;
-        setInterval(async () => {
-            const res = await fetch("/static/style.css", { cache: "no-store" });
-            const modified = res.headers.get("last-modified");
-            if (lastModified && modified !== lastModified) {
-                location.reload();
-            }
-            lastModified = modified;
-        }, 1000);
-    </script>
-    <script>
-    document.getElementById("miForm").addEventListener("submit", async function(e) {
-        e.preventDefault();  
-
-        const formData = new FormData(this);
-        const res = await fetch("/", { method: "POST", body: formData });
-        const html = await res.text();
-
-        const doc = new DOMParser().parseFromString(html, "text/html");
-        document.querySelector(".box_palabras").innerHTML = doc.querySelector(".box_palabras").innerHTML;
-        document.querySelector(".modal").style.display = doc.querySelector(".modal").style.display;
-        document.getElementById("input_clean").value= ""
-        document.getElementById("input_letra").value = "";
-        document.getElementById("input_letra").focus();
-    });
-</script>
-    {% endif %}
-    <footer>
-        <div class="footer2"><a href="">© 2026 por Franco Burgoa.Todos los derechos reservados</a></div>
-    </footer>
+        {% if DEBUG %}
+        <script>
+            let lastModified = null;
+            setInterval(async () => {
+                const res = await fetch("/static/style.css", { cache: "no-store" });
+                const modified = res.headers.get("last-modified");
+                if (lastModified && modified !== lastModified) {
+                    location.reload();
+                }
+                lastModified = modified;
+            }, 1000);
+        </script>
+        {% endif %}
+        <script src="/static/canvas.js"></script>
+        <script src="/static/game.js"></script>
+        <footer>
+            <div class="footer2"><a href="">© 2026 por Franco Burgoa.Todos los derechos reservados</a></div>
+        </footer>
     </div>
 </body>
+
 </html>
