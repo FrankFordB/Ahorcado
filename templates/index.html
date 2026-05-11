@@ -6,10 +6,15 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
-<body>
+<body><div class="container">
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+  <div></div>
+
     <div class="body_master">
         <div class="header">
-            <!-- From Uiverse.io by dexter-st --> 
+            <h1 class="hola">
 <div class="wrapper-grid">
   <div class="cube">
     <div class="face face-front">A</div>
@@ -73,18 +78,32 @@
     <div class="face face-top"></div>
     <div class="face face-bottom"></div>
   </div>
-    
+  
+ 
 </div>
+</h1>
 
+<!--MODAL -->
+<div class="modal" style="display: {{ mostrar_modal }}">
+    <div class="modal_contenido">
+        <p>{{ mensaje }}</p>
+        <a href="/">Jugar de nuevo</a>
+    </div>
+</div>
             <div class="loader"></div>
         </div>
         <div class="Cuerpo_juego">
             <div class="box_palabras">
+                
                 <p>Palabra: <strong>{{ oculta }}</strong></p>
                 <p>Intentos restantes: <strong>{{ intentos }}</strong></p>
-
-                <p>Letras usadas:
-                    {% if letras_usadas %}
+                <div style="display: flex; gap: 10px;">
+                
+                <p>Letras usadas: </p> 
+                
+                
+                <p class="error_letra">
+                    {% if letras_usadas  %}
                     {% for l in letras_usadas %}
                     <strong>{{ l }}</strong>
                     {% endfor %}
@@ -92,12 +111,13 @@
                     ninguna todavía
                     {% endif %}
                 </p>
-
+               
+                </div>
                 <p>{{ mensaje }}</p>
             </div>
             {% if not terminado %}
-            <form method="post" action="/">
-                <input class="input_style" name="letra" maxlength="1" placeholder="Ingresá una letra" required
+            <form id="miForm" method="post" action="/">
+                <input id="input_clean" class="input_style" name="letra" maxlength="1" placeholder="Ingresá una letra" required
                     autofocus />
                 
             </form>
@@ -108,6 +128,7 @@
         </div>
     </div>
     {% if DEBUG %}
+    
     <script>
         let lastModified = null;
         setInterval(async () => {
@@ -119,7 +140,28 @@
             lastModified = modified;
         }, 1000);
     </script>
+    <script>
+    document.getElementById("miForm").addEventListener("submit", async function(e) {
+        e.preventDefault();  
+
+        const formData = new FormData(this);
+        const res = await fetch("/", { method: "POST", body: formData });
+        const html = await res.text();
+
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        document.querySelector(".box_palabras").innerHTML = doc.querySelector(".box_palabras").innerHTML;
+        document.querySelector(".modal").style.display = doc.querySelector(".modal").style.display;
+        document.getElementById("input_clean").value= ""
+        document.getElementById("input_letra").value = "";
+        document.getElementById("input_letra").focus();
+    });
+</script>
     {% endif %}
+    </div>
 </body>
+<footer > 
+    <div class="footer2"><a href="">© 2026 por Franco Burgoa.Todos los derechos reservados</a>
+    </div>
+</footer>
 
 </html>

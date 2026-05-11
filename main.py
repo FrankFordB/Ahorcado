@@ -37,9 +37,10 @@ def get_contexto(request):
     return {
         "oculta": " ".join(juego["oculta"]),
         "intentos": juego["intentos"],
-        "letras_usadas": juego["letras_usadas"],
+        "letras_usadas": " - ".join(juego["letras_usadas"]) or "ninguna todavía",
         "mensaje": juego["mensaje"],
         "terminado": juego["terminado"],
+        "mostrar_modal": "flex" if juego["terminado"] else "none",  # ← nuevo
         "DEBUG": True,
     }
 @app.get("/", response_class=HTMLResponse)
