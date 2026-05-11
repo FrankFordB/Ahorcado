@@ -2545,3 +2545,230 @@ input:focus::placeholder {
     font-size: 20px;
     text-decoration: none;
 }
+
+/* ===================== RESPONSIVE ===================== */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+    .header {
+        width: 70%;
+        padding: 2% 4%;
+    }
+
+    .Cuerpo_juego {
+        width: 69.9%;
+        padding: 0% 4%;
+    }
+
+    .wrapper-grid {
+        --cube-width: 40px;
+        --cube-height: 40px;
+        --font-size: 1.5em;
+    }
+}
+
+/* Mobile grande (480px - 768px) */
+@media (max-width: 768px) {
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .container {
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .body_master {
+        flex: 1;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        min-height: 0;
+    }
+
+    .footer2 {
+        height: 6vh;
+        flex-shrink: 0;
+    }
+
+    .header {
+        width: 90%;
+        padding: 3% 4%;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        border-radius: 10px 10px 0 0;
+        justify-content: center;
+    }
+
+    .hola {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: 0;
+    }
+
+    .wrapper-grid {
+        margin: 0 auto;
+    }
+
+    .Cuerpo_juego {
+        width: 89.9%;
+        padding: 3% 4%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .wrapper-grid {
+        --cube-width: 34px;
+        --cube-height: 34px;
+        --font-size: 1.2em;
+    }
+
+    .box_palabras p {
+        font-size: 16px;
+        margin: 4px 0;
+    }
+
+    .input_style {
+        font-size: 16px;
+        max-width: 160px;
+    }
+
+    form {
+        margin-top: 8%;
+    }
+
+    .loader {
+        width: 3em;
+        height: 3em;
+    }
+
+    .footer2 {
+        height: 6vh;
+        flex-shrink: 0;
+    }
+
+    .footer2 a {
+        font-size: 13px;
+    }
+
+    .modal_contenido {
+        padding: 25px;
+        margin: 0 20px;
+    }
+}
+
+/* Mobile pequeño (hasta 480px) */
+@media (max-width: 480px) {
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .container {
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .body_master {
+        flex: 1;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        min-height: 0;
+    }
+
+    .footer2 {
+        height: 5vh;
+        flex-shrink: 0;
+    }
+
+    .header {
+        width: 92%;
+        padding: 3% 3%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .hola {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: 0;
+    }
+
+    .wrapper-grid {
+        margin: 0 auto;
+    }
+
+    .Cuerpo_juego {
+        width: 91.9%;
+        padding: 3% 3%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .wrapper-grid {
+        --cube-width: 28px;
+        --cube-height: 28px;
+        --font-size: 1em;
+        grid-template-columns: repeat(7, var(--cube-width));
+        width: calc(7 * var(--cube-width));
+    }
+
+    .box_palabras p {
+        font-size: 13px;
+        margin: 3px 0;
+    }
+
+    .input_style {
+        font-size: 14px;
+        padding: 8px 12px;
+        max-width: 130px;
+    }
+
+    form {
+        margin-top: 5%;
+    }
+
+    .loader {
+        width: 2.5em;
+        height: 2.5em;
+    }
+
+    .nueva_partida {
+        font-size: 14px;
+        padding: 8px 0;
+    }
+
+    .footer2 {
+        height: 6vh;
+        flex-shrink: 0;
+    }
+
+    .footer2 a {
+        font-size: 11px;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .modal_contenido {
+        padding: 20px 15px;
+        width: 85%;
+    }
+}
