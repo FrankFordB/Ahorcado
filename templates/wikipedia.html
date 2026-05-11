@@ -10,6 +10,10 @@
     * {
         box-sizing: border-box;
     }
+    html, body {
+        overflow: auto !important;
+        height: auto !important;
+    }
     body {
         font-family: sans-serif;
         font-size: 14px;
@@ -86,6 +90,7 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
+        .ux-vault-toggle {margin: 5vh auto 2em auto;}
         body {
             flex-direction: column;
         }
