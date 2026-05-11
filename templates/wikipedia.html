@@ -3,41 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/css/style.css">
 <title>Wikipedia, la enciclopedia libre</title>
-<link rel="shortcut icon" href="static\wikipedia.png" type="image/x-icon" />
+<link rel="shortcut icon" href="/static/img/wikipedia.png" type="image/x-icon" />
 <style>
+    * {
+        box-sizing: border-box;
+    }
     body {
         font-family: sans-serif;
         font-size: 14px;
         margin: 0;
         padding: 0;
         background-color: #f6f6f6;
+        display: flex;
+    }
+    #site-navigation {
+        width: 10em;
+        min-width: 10em;
+        padding: 1em;
+        font-size: 0.85em;
+        background-color: #f6f6f6;
+        border-right: 1px solid #a2a9b1;
+        min-height: 100vh;
+    }
+    #site-navigation ul {
+        list-style: none;
+        padding: 0;
+    }
+    #site-navigation a {
+        text-decoration: none;
+        color: #0645ad;
+    }
+    #site-navigation a:hover {
+        text-decoration: underline;
     }
     #content {
+        flex: 1;
         background-color: white;
-        margin-left: 10em;
-        margin-top: 1em;
+        margin: 1em;
         padding: 1em;
         border: 1px solid #a7d7f9;
-        border-right: none;
-    }
-    #mw-head {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        background-color: #f6f6f6;
-    }
-    #left-navigation {
-        position: absolute;
-        top: 1em;
-        left: 10em;
-    }
-    #right-navigation {
-        position: absolute;
-        top: 1em;
-        right: 1em;
+        min-width: 0;
     }
     h1 {
         font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
@@ -53,6 +60,7 @@
         float: right;
         width: 250px;
         margin-left: 1em;
+        margin-bottom: 1em;
         padding: 0.5em;
         font-size: 0.9em;
     }
@@ -60,34 +68,72 @@
         text-align: center;
         background-color: #eaecf0;
     }
-    #site-navigation {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 10em;
-        padding: 1em;
-        font-size: 0.85em;
-    }
-    #site-navigation ul {
-        list-style: none;
-        padding: 0;
-    }
-    #site-navigation a {
-        text-decoration: none;
-        color: #0645ad;
-    }
-    #site-navigation a:hover {
-        text-decoration: underline;
-    }
     .main-content {
         line-height: 1.6;
     }
-    /* Estilo del toc (tabla de contenidos) */
     .toc {
         background-color: #f8f9fa;
         border: 1px solid #a2a9b1;
         padding: 1em;
         display: inline-block;
+    }
+    /* Switch al final de la página, flujo normal (no pegajoso) */
+    .ux-vault-toggle {
+        position: static !important;
+        display: block;
+        margin: 110vh auto 2em auto;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        body {
+            flex-direction: column;
+        }
+        #site-navigation {
+            width: 100%;
+            min-width: unset;
+            min-height: unset;
+            border-right: none;
+            border-bottom: 1px solid #a2a9b1;
+            padding: 0.5em 1em;
+        }
+        #site-navigation ul {
+            display: flex;
+            gap: 1em;
+            margin: 0;
+        }
+        #site-navigation li {
+            white-space: nowrap;
+        }
+        #content {
+            margin: 0.5em;
+            padding: 0.75em;
+        }
+        .infobox {
+            float: none;
+            width: 100%;
+            margin-left: 0;
+            margin-bottom: 1em;
+        }
+        h1 {
+            font-size: 1.4em;
+            /* espacio para el switch fijo */
+            padding-right: 160px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #content {
+            margin: 0.25em;
+            padding: 0.5em;
+        }
+        h1 {
+            font-size: 1.2em;
+            padding-right: 155px;
+        }
+        body {
+            font-size: 13px;
+        }
     }
 </style>
 </head>
@@ -251,6 +297,6 @@ print(a+b)</td>
     
   </div>
 </label>
-<script src="/static/game.js"></script>
+<script src="/static/js/game.js"></script>
 </body>
 </html>

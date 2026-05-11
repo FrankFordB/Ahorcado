@@ -467,7 +467,8 @@ body {
 
 
 .body_master {
-    height: 90dvh;
+    height: 85dvh;
+    margin-top: 5vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -528,7 +529,7 @@ body {
 form {
     display: flex;
     justify-content: center;
-    margin-top: 32%;
+    margin-top: 10%;
 }
 
 .input_style {
@@ -743,6 +744,8 @@ canvas {
       background: #1c1c1c;
       border: 2px solid #078fff9c;
       margin-top: 20px;
+      max-width: 100%;
+      height: auto;
     }
 
 p {
@@ -917,13 +920,28 @@ p {
         height: auto;
         display: flex;
         flex-direction: column;
+        align-items: center;
         justify-content: center;
+    }
+
+    .dibujo {
+        width: 100%;
+        align-items: center;
+    }
+
+    .box_palabras {
+        width: 100%;
     }
 
     .wrapper-grid {
         --cube-width: 34px;
         --cube-height: 34px;
         --font-size: 1.2em;
+    }
+
+    .dibujo p {
+        font-size: 20px;
+        letter-spacing: 4px;
     }
 
     .box_palabras p {
@@ -943,11 +961,6 @@ p {
     .loader {
         width: 3em;
         height: 3em;
-    }
-
-    .footer2 {
-        height: 6vh;
-        flex-shrink: 0;
     }
 
     .footer2 a {
@@ -1015,7 +1028,17 @@ p {
         height: auto;
         display: flex;
         flex-direction: column;
+        align-items: center;
         justify-content: center;
+    }
+
+    .dibujo {
+        width: 100%;
+        align-items: center;
+    }
+
+    .box_palabras {
+        width: 100%;
     }
 
     .wrapper-grid {
@@ -1024,6 +1047,13 @@ p {
         --font-size: 1em;
         grid-template-columns: repeat(7, var(--cube-width));
         width: calc(7 * var(--cube-width));
+    }
+
+    .dibujo p {
+        font-size: 16px;
+        letter-spacing: 3px;
+        word-break: break-all;
+        padding: 0 8px;
     }
 
     .box_palabras p {

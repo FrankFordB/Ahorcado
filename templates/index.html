@@ -4,12 +4,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ahorcado</title>
-    <link rel="stylesheet" href="/static/Sombras.css">
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/css/Sombras.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="shortcut icon" href="static\juego.avif" type="image/x-icon" />
 </head>
 
 <body>
+    <!-- CHECK BOX -->
 <label class="ux-vault-toggle">
   <input type="checkbox" id="switchVolver" class="ux-vault-toggle__input" />
   <div class="ux-vault-toggle__wrapper">
@@ -78,7 +79,7 @@
     </div>
   </div>
 </label>
-
+<!-- ESTRELLITAS -->
     <div class="container">
         <div id="stars"></div>
         <div id="stars2"></div>
@@ -209,7 +210,7 @@
         <script>
             let lastModified = null;
             setInterval(async () => {
-                const res = await fetch("/static/style.css", { cache: "no-store" });
+                const res = await fetch("/static/css/style.css", { cache: "no-store" });
                 const modified = res.headers.get("last-modified");
                 if (lastModified && modified !== lastModified) {
                     location.reload();
@@ -218,8 +219,8 @@
             }, 1000);
         </script>
         {% endif %}
-        <script src="/static/canvas.js"></script>
-        <script src="/static/game.js"></script>
+        <script src="/static/js/canvas.js"></script>
+        <script src="/static/js/game.js"></script>
         <footer>
             <div class="footer2"><a href="">© 2026 por Franco Burgoa.Todos los derechos reservados</a></div>
         </footer>
