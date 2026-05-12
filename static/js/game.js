@@ -20,7 +20,7 @@ if (miForm) miForm.addEventListener("submit", async function (e) {
 
 const switchVolver = document.getElementById("switchVolver");
 
-// Si estamos en Wikipedia, el switch arranca encendido (ON)
+
 if (window.location.pathname === "/wikipedia") {
     switchVolver.checked = true;
 }

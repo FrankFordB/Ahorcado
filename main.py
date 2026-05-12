@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import random
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
